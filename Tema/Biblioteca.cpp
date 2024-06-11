@@ -27,7 +27,11 @@ public:
 
     // Implementación de la función mostrarDetalles para libros
     void mostrarDetalles() const override {
-        cout << "Libro - Titulo: " << titulo << ", Autor: " << autor << ", Código: " << codigo << endl;
+        
+        
+        
+        
+        
     }
 };
 
@@ -39,7 +43,18 @@ public:
 
     // Implementación de la función mostrarDetalles para revistas
     void mostrarDetalles() const override {
-        cout << "Revista - Titulo: " << titulo << ", Autor: " << autor << ", Código: " << codigo << endl;
+        cout << "\tRevista - Titulo: " <<endl; 
+        cout << titulo <<endl;
+        
+        cout <<"\tAutor: " <<endl;
+        cout << autor <<endl;
+        
+        cout <<"\tCodigo: " <<endl;
+        cout << codigo <<endl;
+        cout <<"______________________________"<<endl;
+
+        
+        
     }
 };
 
@@ -51,9 +66,21 @@ public:
 
     // Implementación de la función mostrarDetalles para DVDs
     void mostrarDetalles() const override {
-        cout << "DVD - Titulo: " << titulo << ", Director: " << autor << ", Código: " << codigo << endl;
+        cout << "\tRevista - Titulo: " <<endl; 
+        cout << titulo <<endl;
+        
+        cout <<"\tAutor: " <<endl;
+        cout << autor <<endl;
+        
+        cout <<"\tCodigo: " <<endl;
+        cout << codigo <<endl;
+        
+        cout <<"______________________________"<<endl;
     }
 };
+
+
+
 
 // Función principal
 int main() {
