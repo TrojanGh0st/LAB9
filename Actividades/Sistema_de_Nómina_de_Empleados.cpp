@@ -3,7 +3,7 @@
 using namespace std;
 
 class Empleado {
-protected:
+public:
     string nombre;
 public:
     Empleado(const string& nombre) : nombre(nombre) {}
