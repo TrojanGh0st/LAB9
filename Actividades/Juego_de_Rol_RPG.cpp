@@ -3,106 +3,129 @@
 
 using namespace std;
 
-// Paso 1: Clase Producto
-class Producto {
+// Clase base Personaje
+class Personaje {
 protected:
     string nombre;
-    double precio;
+    int salud;
 public:
-    Producto(const string& nombre, double precio) : nombre(nombre), precio(precio) {}
-    virtual double calcularPrecio() const { return precio; } // Precio base del producto
-    virtual ~Producto() = default;
+    Personaje(const string& nombre, int salud) : nombre(nombre), salud(salud) {}
+    virtual void atacar(Personaje* objetivo) const = 0;
+    virtual void defender() const = 0;
+    virtual void usarHabilidadEspecial() const = 0;
+    string obtenerNombre() const { return nombre; } 
+    int obtenerSalud() const { return salud; } 
+    virtual void mostrarInfo() const = 0; 
+    virtual ~Personaje() = default;
 };
 
-// Paso 2: Clases Derivadas
-
-// Clase Electronico
-class Electronico : public Producto {
-private:
-    string marca;
+// Clase Guerrero
+class Guerrero : public Personaje {
 public:
-    Electronico(const string& nombre, double precio, const string& marca) : Producto(nombre, precio), marca(marca) {}
-
-    // Precio de un producto electrónico con descuento del 10%
-    double calcularPrecio() const override {
-        return precio * 0.9;
+    Guerrero(const string& nombre, int salud) : Personaje(nombre, salud) {}
+    void atacar(Personaje* objetivo) const override {
+        cout << obtenerNombre() << " ataca con espada a " << objetivo->obtenerNombre() << "!\n";
     }
-};
-
-// Clase Ropa
-class Ropa : public Producto {
-private:
-    string talla;
-public:
-    Ropa(const string& nombre, double precio, const string& talla) : Producto(nombre, precio), talla(talla) {}
-
-    // Precio de una prenda de ropa con descuento del 20%
-    double calcularPrecio() const override {
-        return precio * 0.8;
+    void defender() const override {
+        cout << obtenerNombre() << " se defiende con su escudo!\n";
+    }
+    void usarHabilidadEspecial() const override {
+        cout << obtenerNombre() << " usa embestida!\n";
+    }
+    void mostrarInfo() const override {
+        cout << "Guerrero: " << obtenerNombre() << ", Salud: " << obtenerSalud() << endl;
     }
 };
 
-// Clase Alimento
-class Alimento : public Producto {
-private:
-    string fechaCaducidad;
+// Clase Mago
+class Mago : public Personaje {
 public:
-    Alimento(const string& nombre, double precio, const string& fechaCaducidad) : Producto(nombre, precio), fechaCaducidad(fechaCaducidad) {}
-
-    // Precio de un producto alimenticio sin descuento
-    double calcularPrecio() const override {
-        return precio;
+    Mago(const string& nombre, int salud) : Personaje(nombre, salud) {}
+    void atacar(Personaje* objetivo) const override {
+        cout << obtenerNombre() << " lanza una bola de fuego a " << objetivo->obtenerNombre() << "!\n";
+    }
+    void defender() const override {
+        cout << obtenerNombre() << " se protege con un escudo mágico!\n";
+    }
+    void usarHabilidadEspecial() const override {
+        cout << obtenerNombre() << " usa invocación!\n";
+    }
+    void mostrarInfo() const override {
+        cout << "Mago: " << obtenerNombre() << ", Salud: " << obtenerSalud() << endl;
     }
 };
 
-// Función para calcular el valor total del inventario
-double calcularValorTotal(Producto* inventario[], int numProductos) {
-    double valorTotal = 0.0;
-    for (int i = 0; i < numProductos; ++i) {
-        valorTotal += inventario[i]->calcularPrecio();
+// Clase Arquero
+class Arquero : public Personaje {
+public:
+    Arquero(const string& nombre, int salud) : Personaje(nombre, salud) {}
+    void atacar(Personaje* objetivo) const override {
+        cout << obtenerNombre() << " dispara una flecha a " << objetivo->obtenerNombre() << "!\n";
     }
-    return valorTotal;
-}
-
-// Función para aplicar descuentos a todos los productos del inventario
-void aplicarDescuentos(Producto* inventario[], int numProductos) {
-    for (int i = 0; i < numProductos; ++i) {
-        inventario[i]->calcularPrecio();
+    void defender() const override {
+        cout << obtenerNombre() << " se agacha para esquivar ataques!\n";
     }
-}
-
-// Función para mostrar el inventario
-void mostrarInventario(Producto* inventario[], int numProductos) {
-    cout << "Inventario:\n";
-    for (int i = 0; i < numProductos; ++i) {
-        cout << inventario[i]->calcularPrecio() << " - " << inventario[i]->calcularPrecio() << endl;
+    void usarHabilidadEspecial() const override {
+        cout << obtenerNombre() << " usa tiro múltiple!\n";
     }
-}
-
-// Función para liberar la memoria del inventario
-void liberarInventario(Producto* inventario[], int numProductos) {
-    for (int i = 0; i < numProductos; ++i) {
-        delete inventario[i];
+    void mostrarInfo() const override {
+        cout << "Arquero: " << obtenerNombre() << ", Salud: " << obtenerSalud() << endl;
     }
-}
-
+};
 // MENÚ
 void mostrarMenu() {
     cout << "----------- Menu -----------\n";
-    cout << "1. Agregar Producto Electrónico\n";
-    cout << "2. Agregar Producto de Ropa\n";
-    cout << "3. Agregar Producto de Alimento\n";
-    cout << "4. Calcular Valor Total del Inventario\n";
-    cout << "5. Aplicar Descuentos\n";
-    cout << "6. Mostrar Inventario\n";
-    cout << "7. Salir\n";
+    cout << "1. Crear Guerrero\n";
+    cout << "2. Crear Mago\n";
+    cout << "3. Crear Arquero\n";
+    cout << "4. Mostrar información de todos los personajes\n";
+    cout << "5. Luchar\n";
+    cout << "6. Salir\n";
     cout << "----------------------------\n";
 }
 
+// MOSTRAR INFO DE LOS PERSOANJES YA CREADOS
+void mostrarInfoPersonajes(Personaje* personajes[], int numPersonajes) {
+    cout << "Información de los personajes:\n";
+    for (int i = 0; i < numPersonajes; ++i) {
+        personajes[i]->mostrarInfo();
+    }
+    cout << endl;
+}
+
+//LUCHA ENTRE PESONAJES CREADOS
+void luchar(Personaje* personajes[], int numPersonajes) {
+    cout << "Seleccione el atacante:\n";
+    for (int i = 0; i < numPersonajes; ++i) {
+        cout << i + 1 << ". " << personajes[i]->obtenerNombre() << endl;
+    }
+    int atacanteIndex;
+    do {
+        cout << "Seleccione el atacante (1-" << numPersonajes << "): ";
+        cin >> atacanteIndex;
+    } while (atacanteIndex < 1 || atacanteIndex > numPersonajes);
+
+    cout << "Seleccione el objetivo:\n";
+    for (int i = 0; i < numPersonajes; ++i) {
+        if (i != atacanteIndex - 1) {
+            cout << i + 1 << ". " << personajes[i]->obtenerNombre() << endl;
+        }
+    }
+    int objetivoIndex;
+    do {
+        cout << "Seleccione el objetivo (1-" << numPersonajes << "): ";
+        cin >> objetivoIndex;
+    } while (objetivoIndex < 1 || objetivoIndex > numPersonajes || objetivoIndex == atacanteIndex);
+
+    personajes[atacanteIndex - 1]->atacar(personajes[objetivoIndex - 1]);
+}
+
+//Función principal
+
 int main() {
-    const int MAX_PRODUCTOS = 100; // Tamaño máximo del arreglo de productos
-    Producto* inventario[MAX_PRODUCTOS];
-    int numProductos = 0; // Contador de productos agregados al inventario
+    const int MAX_PERSONAJES = 100;
+    Personaje* personajes[MAX_PERSONAJES];
+    int numPersonajes = 0;
 
     int opcion;
     do {
@@ -112,61 +135,53 @@ int main() {
 
         switch (opcion) {
             case 1: {
-                string nombre, marca;
-                double precio;
-                cout << "Ingrese el nombre del producto electrónico: ";
+                string nombre;
+                int salud;
+                cout << "Ingrese el nombre del Guerrero: ";
                 cin >> nombre;
-                cout << "Ingrese la marca del producto electrónico: ";
-                cin >> marca;
-                cout << "Ingrese el precio del producto electrónico: ";
-                cin >> precio;
-                inventario[numProductos++] = new Electronico(nombre, precio, marca);
+                cout << "Ingrese la salud del Guerrero: ";
+                cin >> salud;
+                personajes[numPersonajes++] = new Guerrero(nombre, salud);
                 break;
             }
             case 2: {
-                string nombre, talla;
-                double precio;
-                cout << "Ingrese el nombre del producto de ropa: ";
+                string nombre;
+                int salud;
+                cout << "Ingrese el nombre del Mago: ";
                 cin >> nombre;
-                cout << "Ingrese la talla del producto de ropa: ";
-                cin >> talla;
-                cout << "Ingrese el precio del producto de ropa: ";
-                cin >> precio;
-                inventario[numProductos++] = new Ropa(nombre, precio, talla);
+                cout << "Ingrese la salud del Mago: ";
+                cin >> salud;
+                personajes[numPersonajes++] = new Mago(nombre, salud);
                 break;
             }
             case 3: {
-                string nombre, fechaCaducidad;
-                double precio;
-                cout << "Ingrese el nombre del producto de alimento: ";
+                string nombre;
+                int salud;
+                cout << "Ingrese el nombre del Arquero: ";
                 cin >> nombre;
-                cout << "Ingrese la fecha de caducidad del producto de alimento: ";
-                cin >> fechaCaducidad;
-                cout << "Ingrese el precio del producto de alimento: ";
-                cin >> precio;
-                inventario[numProductos++] = new Alimento(nombre, precio, fechaCaducidad);
+                cout << "Ingrese la salud del Arquero: ";
+                cin >> salud;
+                personajes[numPersonajes++] = new Arquero(nombre, salud);
                 break;
             }
             case 4:
-                cout << "Valor Total del Inventario: " << calcularValorTotal(inventario, numProductos) << endl;
+                mostrarInfoPersonajes(personajes, numPersonajes);
                 break;
             case 5:
-                aplicarDescuentos(inventario, numProductos);
-                cout << "Descuentos aplicados correctamente.\n";
+                luchar(personajes, numPersonajes);
                 break;
             case 6:
-                mostrarInventario(inventario, numProductos);
-                break;
-            case 7:
                 cout << "Saliendo...\n";
                 break;
             default:
                 cout << "Opcion invalida. Intente de nuevo.\n";
                 break;
         }
-    } while (opcion != 7);
+    } while (opcion != 6);
 
-    liberarInventario(inventario, numProductos);
+    for (int i = 0; i < numPersonajes; ++i) {
+        delete personajes[i];
+    }
 
     return 0;
 }
