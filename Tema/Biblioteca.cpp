@@ -70,7 +70,6 @@ int main() {
         materiales[i]->mostrarDetalles();
     }
 
-    // Liberar memoria reservada para cada objeto del arreglo
     for (int i = 0; i < 3; ++i) {
         delete materiales[i];
     }
