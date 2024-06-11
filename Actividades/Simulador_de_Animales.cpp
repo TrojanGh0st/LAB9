@@ -157,7 +157,6 @@ int main() {
         }
     } while (opcion != 4); // Salir del bucle cuando el usuario selecciona la opción 4
 
-    // Liberar la memoria asignada dinámicamente para los objetos de Animal creados
     for (int i = 0; i < numAnimales; ++i) {
         delete animales[i];
     }
