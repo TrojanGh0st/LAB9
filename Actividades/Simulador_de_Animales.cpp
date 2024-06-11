@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -9,6 +8,8 @@ protected:
     string nombre;
 public:
     Animal(const string& nombre) : nombre(nombre) {}
+    // Funciones virtuales puras para comer, dormir y moverse.
+    // Esto permite que las clases derivadas implementen sus propias versiones de estas funciones.
     virtual void comer() const = 0;
     virtual void dormir() const = 0;
     virtual void moverse() const = 0;
@@ -22,6 +23,7 @@ class Mamifero : public Animal {
 public:
     Mamifero(const string& nombre) : Animal(nombre) {}
 
+    // Implementación de las funciones virtuales puras de la clase base.
     void comer() const override {
         cout << nombre << " comiendo comida xd\n";
     }
@@ -34,6 +36,7 @@ public:
         cout << nombre << " caminando\n";
     }
 
+    // Función específica de Mamífero.
     void amamantar() const {
         cout << nombre << " amamantando a su cria\n";
     }
@@ -44,6 +47,7 @@ class Ave : public Animal {
 public:
     Ave(const string& nombre) : Animal(nombre) {}
 
+    // Implementación de las funciones virtuales puras de la clase base.
     void comer() const override {
         cout << nombre << " comiendo insectos\n";
     }
@@ -56,6 +60,7 @@ public:
         cout << nombre << " volando\n";
     }
 
+    // Función específica de Ave.
     void cantar() const {
         cout << nombre << " cantando fiu fiu\n";
     }
@@ -66,6 +71,7 @@ class Reptil : public Animal {
 public:
     Reptil(const string& nombre) : Animal(nombre) {}
 
+    // Implementación de las funciones virtuales puras de la clase base.
     void comer() const override {
         cout << nombre << " comiendo\n";
     }
@@ -78,6 +84,7 @@ public:
         cout << nombre << " reptando\n";
     }
     
+    // Función específica de Reptil.
     void cambiarPiel() const {
         cout << nombre << " cambiando de piel...\n";
     }
@@ -94,7 +101,9 @@ void mostrarMenu() {
 }
 
 int main() {
-    vector<Animal*> animales;
+    const int MAX_ANIMALES = 100; // Tamaño máximo del arreglo de animales
+    Animal* animales[MAX_ANIMALES]; // Arreglo de punteros a Animal
+    int numAnimales = 0; // Contador de animales creados
 
     int opcion;
     do {
@@ -108,7 +117,7 @@ int main() {
                 cout << "Ingrese el nombre del mamifero: ";
                 cin >> nombre;
                 Mamifero* mamifero = new Mamifero(nombre);
-                animales.push_back(mamifero);
+                animales[numAnimales++] = mamifero;
                 mamifero->comer();
                 mamifero->dormir();
                 mamifero->moverse();
@@ -120,7 +129,7 @@ int main() {
                 cout << "Ingrese el nombre del ave: ";
                 cin >> nombre;
                 Ave* ave = new Ave(nombre);
-                animales.push_back(ave);
+                animales[numAnimales++] = ave;
                 ave->comer();
                 ave->dormir();
                 ave->moverse();
@@ -132,7 +141,7 @@ int main() {
                 cout << "Ingrese el nombre del reptil: ";
                 cin >> nombre;
                 Reptil* reptil = new Reptil(nombre);
-                animales.push_back(reptil);
+                animales[numAnimales++] = reptil;
                 reptil->comer();
                 reptil->dormir();
                 reptil->moverse();
@@ -146,10 +155,11 @@ int main() {
                 cout << "Opcion invalida. Intente de nuevo.\n";
                 break;
         }
-    } while (opcion != 4);
+    } while (opcion != 4); // Salir del bucle cuando el usuario selecciona la opción 4
 
-    for (const auto& animal : animales) {
-        delete animal;
+    // Liberar la memoria asignada dinámicamente para los objetos de Animal creados
+    for (int i = 0; i < numAnimales; ++i) {
+        delete animales[i];
     }
 
     return 0;
