@@ -136,7 +136,6 @@ int main() {
         }
     } while (opcion != 5);
 
-    // Liberar la memoria asignada
     for (int i = 0; i < cantidadMateriales; ++i) {
         delete materiales[i];
     }
